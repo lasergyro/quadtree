@@ -1,1 +1,1 @@
-from .libquadtree import *
+from .libquadtree import Quadtree

@@ -3,6 +3,7 @@
 // *********************************************************************************
 #ifndef QUADTREE_CPP
 #define QUADTREE_CPP
+#include <cstdlib>
 #include "QuadTree.hpp"
 #include "SmallList.hpp"
 
@@ -254,5 +255,6 @@ QuadNodeData Quadtree::root_data() const
   rd.depth = 0;
   return rd;
 }
+
 
 #endif

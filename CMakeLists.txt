@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.9)
 
-#find_program(CCACHE_PROGRAM ccache)
-#if (${CCACHE_FOUND})
-#  set(CMAKE_C_COMPILER_LAUNCHER ${CCACHE})
-#  set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
-#endif()
-#message(STATUS "CCACHE ${CCACHE_FOUND}")
+find_program(CCACHE_PROGRAM ccache)
+if (${CCACHE_FOUND})
+  set(CMAKE_C_COMPILER_LAUNCHER ${CCACHE})
+  set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
+endif()
+message(STATUS "CCACHE ${CCACHE_FOUND}")
 
 if (NOT CMAKE_BUILD_TYPE)
   message (STATUS "No build type selected, default to Release")
@@ -28,10 +28,17 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(pybind11 REQUIRED)
 #find_package(Eigen3 REQUIRED)
-file(GLOB all_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*)
+#file(GLOB all_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*)
+
+
+#
+add_library(quadtree cpp/QuadTree.cpp cpp/QuadTree.hpp cpp/SmallList.hpp)
+add_executable(main cpp/main.cpp cpp/QuadTree.hpp cpp/SmallList.hpp)
+target_link_libraries(main PUBLIC quadtree)
+
 
 #message(WARNING "${all_SRCS}")
-pybind11_add_module(libquadtree ${all_SRCS})
+pybind11_add_module(libquadtree cpp/libquadtree.cpp cpp/QuadTree.hpp cpp/SmallList.hpp)
 set_target_properties(libquadtree PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED TRUE
@@ -41,4 +48,4 @@ set_target_properties(libquadtree PROPERTIES
         CXX_VISIBILITY_PRESET hidden
         INTERPROCEDURAL_OPTIMIZATION TRUE
         )
-target_link_libraries(libquadtree)
+target_link_libraries(libquadtree PRIVATE pybind11::module quadtree)
