@@ -1,0 +1,7 @@
+**/*.so
+**/*.egg-info
+cmake-build-*/
+build/
+**/__pycache__
+.idea/
+.vscode/
